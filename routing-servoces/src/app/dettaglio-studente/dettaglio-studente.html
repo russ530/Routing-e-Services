@@ -1,0 +1,99 @@
+<div class="container mt-4">
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Caricamento...</span>
+    </div>
+    <p class="mt-2">Caricamento dettagli studente...</p>
+  </div>
+
+  <!-- Dettaglio studente -->
+  <div *ngIf="!isLoading && studente" class="card">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">📋 Dettaglio Studente</h2>
+      <a class="btn btn-light btn-sm" routerLink="/pagina3">
+        ← Torna alla lista
+      </a>
+    </div>
+    
+    <div class="card-body">
+      <div class="row">
+        <!-- Informazioni principali -->
+        <div class="col-md-6">
+          <div class="info-section">
+            <h4 class="text-primary">Informazioni Personali</h4>
+            <div class="info-item">
+              <strong>ID:</strong> 
+              <span class="badge bg-secondary">{{ studente.id }}</span>
+            </div>
+            <div class="info-item">
+              <strong>Nome:</strong> {{ studente.nome }}
+            </div>
+            <div class="info-item">
+              <strong>Classe:</strong> 
+              <span class="badge bg-primary">{{ studente.classe }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Media e giudizio -->
+        <div class="col-md-6">
+          <div class="info-section">
+            <h4 class="text-success">Risultati Scolastici</h4>
+            <div class="info-item">
+              <strong>Media Voti:</strong>
+              <span class="badge fs-6" [class]="getColoreMedia()">
+                {{ studente.mediaVoti }}
+              </span>
+            </div>
+            <div class="info-item">
+              <strong>Giudizio:</strong>
+              <span class="badge bg-info text-dark">{{ getGiudizio() }}</span>
+            </div>
+            <div class="info-item">
+              <strong>Stato:</strong>
+              <span *ngIf="studente.mediaVoti >= 6" class="badge bg-success">
+                ✅ Promosso
+              </span>
+              <span *ngIf="studente.mediaVoti < 6" class="badge bg-danger">
+                ❌ Bocciato
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grafico media -->
+      <div class="mt-4">
+        <h5 class="text-muted">Andamento Media</h5>
+        <div class="progress" style="height: 25px;">
+          <div 
+            class="progress-bar" 
+            [class]="getColoreMedia()"
+            [style.width.%]="(studente.mediaVoti / 10) * 100">
+            {{ studente.mediaVoti }}/10
+          </div>
+        </div>
+        <small class="text-muted">
+          Scala: 0-10 (Sufficiente: 6.0)
+        </small>
+      </div>
+
+      <!-- Azioni -->
+      <div class="mt-4 pt-3 border-top">
+        <a class="btn btn-outline-primary" routerLink="/pagina3">
+          ← Torna alla Lista
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messaggio studente non trovato -->
+  <div *ngIf="!isLoading && !studente" class="alert alert-danger text-center">
+    <h4>❌ Studente non trovato</h4>
+    <p>Lo studente che stai cercando non esiste o è stato rimosso.</p>
+    <a class="btn btn-primary" routerLink="/pagina3">
+      Torna alla lista studenti
+    </a>
+  </div>
+</div>

@@ -1,4 +1,35 @@
-<article class="post">
-<h2>{{ nome }}</h2>
-<p>{{ classe }}</p>
-</article>
+<div class="card studente-card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <h5 class="card-title mb-0">{{ nome }}</h5>
+      <span class="badge bg-primary">{{ classe }}</span>
+    </div>
+    
+    <div class="media-section">
+      <div *ngIf="mostraMedia" class="media-display">
+        <span class="badge" [class]="getColoreMedia()">
+          Media: {{ mediaVoti }}
+        </span>
+      </div>
+      <div *ngIf="!mostraMedia" class="media-hidden">
+        <span class="text-muted">Media: ***</span>
+      </div>
+    </div>
+
+    <div class="d-flex gap-2 mt-2">
+      <button 
+        class="btn btn-sm flex-grow-1"
+        [class.btn-success]="!mostraMedia"
+        [class.btn-warning]="mostraMedia"
+        (click)="toggleMedia()">
+        {{ mostraMedia ? 'Nascondi' : 'Mostra' }} Media
+      </button>
+      
+      <a 
+        class="btn btn-sm btn-outline-primary"
+        [routerLink]="['/studente', id]">
+        🔍 Dettagli
+      </a>
+    </div>
+  </div>
+</div>

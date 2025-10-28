@@ -1,5 +1,92 @@
-<app-studente
-*ngFor="let p of studenti"
-[nome]="p.nome"
-[classe]="p.classe">
-</app-studente>
+<div class="card">
+  <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <h2 class="mb-0">🎓 Gestione Studenti</h2>
+    <div>
+      <span class="badge bg-light text-primary me-2">
+        Media Generale: {{ mediaGenerale }}
+      </span>
+      <button class="btn btn-success btn-sm" (click)="aggiungiStudenteEsempio()">
+        ➕ Aggiungi Studente
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
+    
+    <!-- Tabella Studenti -->
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Classe</th>
+            <th>Media Voti</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let studente of studenti">
+            <td>{{ studente.id }}</td>
+            <td>
+              <strong>{{ studente.nome }}</strong>
+            </td>
+            <td>{{ studente.classe }}</td>
+            <td>
+              <span *ngIf="studente.mostraMedia" class="badge" 
+                    [class.bg-success]="studente.mediaVoti >= 6"
+                    [class.bg-warning]="studente.mediaVoti >= 5 && studente.mediaVoti < 6"
+                    [class.bg-danger]="studente.mediaVoti < 5">
+                {{ studente.mediaVoti }}
+              </span>
+              <span *ngIf="!studente.mostraMedia" class="text-muted">
+                ***
+              </span>
+            </td>
+            <td>
+              <div class="btn-group">
+                <button 
+                  class="btn btn-sm" 
+                  [class.btn-success]="!studente.mostraMedia"
+                  [class.btn-warning]="studente.mostraMedia"
+                  (click)="toggleMediaStudente(studente.id)">
+                  {{ studente.mostraMedia ? 'Nascondi' : 'Mostra' }} Media
+                </button>
+                
+                <!-- Link ai dettagli nella tabella -->
+                <a 
+                  class="btn btn-sm btn-outline-primary"
+                  [routerLink]="['/studente', studente.id]">
+                  🔍
+                </a>
+                
+                <!-- CORREGGI QUESTO: usa il metodo del componente invece del servizio diretto -->
+                <button 
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="rimuoviStudente(studente.id)">
+                  ❌
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Componenti Studente riutilizzabili -->
+    <div class="mt-4">
+      <h4>📚 Componenti Studente Riutilizzabili</h4>
+      <p class="text-muted">Dati provenienti dal servizio StudentiService</p>
+      <div class="row">
+        <div class="col-md-6" *ngFor="let studente of studenti">
+          <app-studente 
+            [id]="studente.id"
+            [nome]="studente.nome"
+            [classe]="studente.classe"
+            [mediaVoti]="studente.mediaVoti">
+          </app-studente>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
